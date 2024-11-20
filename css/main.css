@@ -98,20 +98,19 @@ textarea:focus:-moz-placeholder { color:transparent; }
 textarea:focus::-moz-placeholder { color:transparent; }
 textarea:focus:-ms-input-placeholder { color:transparent; }
 
-input::-webkit-input-placeholder { color: #555555;}
-input:-moz-placeholder { color: #555555;}
-input::-moz-placeholder { color: #555555;}
-input:-ms-input-placeholder { color: #555555;}
+input::-webkit-input-placeholder { color: #ffffff;}
+input:-moz-placeholder { color: #ffffff;}
+input::-moz-placeholder { color: #ffffff;}
+input:-ms-input-placeholder { color: #ffffff;}
 
-textarea::-webkit-input-placeholder { color: #555555;}
-textarea:-moz-placeholder { color: #555555;}
-textarea::-moz-placeholder { color: #555555;}
-textarea:-ms-input-placeholder { color: #555555;}
+textarea::-webkit-input-placeholder { color: #ffffff;}
+textarea:-moz-placeholder { color: #ffffff;}
+textarea::-moz-placeholder { color: #ffffff;}
+textarea:-ms-input-placeholder { color: #ffffff;}
 
 label {
   margin: 0;
   display: block;
-  color: #fff;
 }
 
 /*---------------------------------------------*/
@@ -235,7 +234,7 @@ iframe {
 .wrap-input100 {
   width: 100%;
   position: relative;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
   padding: 29px 0;
 }
 
