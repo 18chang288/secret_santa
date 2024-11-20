@@ -111,6 +111,7 @@ textarea:-ms-input-placeholder { color: #555555;}
 label {
   margin: 0;
   display: block;
+  color: #fff;
 }
 
 /*---------------------------------------------*/
@@ -234,7 +235,7 @@ iframe {
 .wrap-input100 {
   width: 100%;
   position: relative;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   padding: 29px 0;
 }
 
