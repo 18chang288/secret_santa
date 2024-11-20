@@ -161,7 +161,7 @@ iframe {
   padding: 15px;
 
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center, top;
   background-size: cover;
   position: relative;
   z-index: 1;  
