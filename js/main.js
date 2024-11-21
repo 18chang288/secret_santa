@@ -23,6 +23,8 @@ import bcrpt from "bcryptjs";
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
+    console.log("JavaScript is running!");
+
 (function ($) {
     "use strict";
 
