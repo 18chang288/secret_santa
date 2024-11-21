@@ -16,11 +16,28 @@ const auth = firebase.auth();
 auth.onAuthStateChanged((user) => {
 if (user) {
     // User is logged in
-    document.getElementById("welcomeMessage").innerText = `Welcome, ${user.email}`;
+    document.getElementById("welcomeMessage").innerText = `Welcome, ${user}`;
 } else {
     // Redirect to login page if not logged in
     window.location.href = "index.html";
 }
+});
+
+// Handle Secret Santa selection
+document.getElementById('selectSantaBtn').addEventListener('click', () => {
+    const wheel = document.getElementById('wheel');
+    const segments = wheel.querySelectorAll('.segment');
+    const randomIndex = Math.floor(Math.random() * segments.length);
+    const selectedSegment = segments[randomIndex];
+
+    // Rotate the wheel
+    const rotation = 360 * 3 + randomIndex * (360 / segments.length);
+    wheel.style.transform = `rotate(${rotation}deg)`;
+
+    // Display the selected Secret Santa
+    setTimeout(() => {
+        document.getElementById('santaName').textContent = `Secret Santa ${selectedSegment.textContent}`;
+    }, 4000); // Wait for the rotation to complete
 });
 
 // Logout function

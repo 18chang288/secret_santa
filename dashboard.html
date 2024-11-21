@@ -15,7 +15,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="dashboard-main">
-        <div class="dashboard-left">
+        <div class="dashboard-left" class="panel">
         <h2>Instructions</h2>
         <p>1. Click the button to select your Secret Santa!</p>
         <p>2. Once selected, your match will be displayed on the right.</p>
@@ -26,8 +26,13 @@
         <div class="dashboard-right">
         <div class="selection-area">
             <button id="selectSantaBtn">🎁 Spin the Wheel 🎁</button>
-            <div id="selectedSanta" class="selected-santa">
-            <!-- Selected Secret Santa's Name will appear here -->
+            <div id="wheel" class="wheel">
+                <div class="segment">Santa 1</div>
+                <div class="segment">Santa 2</div>
+                <div class="segment">Santa 3</div>
+                <div class="segment">Santa 4</div>
+                <div class="segment">Santa 5</div>
+                <div class="segment">Santa 6</div>
             <h3>Your Secret Santa Match: </h3>
             <p id="santaName">[No one selected yet]</p>
             </div>
