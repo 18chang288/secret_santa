@@ -1,4 +1,6 @@
 // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { get } from "http";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -16,7 +18,6 @@ const firebaseConfig = {
 };
 
 const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 
 // Protect the dashboard page
 auth.onAuthStateChanged((user) => {
