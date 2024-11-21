@@ -12,7 +12,7 @@
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const db = firebase.firestore();
 
     console.log("JavaScript is running!");
 
@@ -39,7 +39,6 @@
 
     $('.validate-form').on('submit', async function(event){
         event.preventDefault();
-        console.log("Form submitted!");
 
         const username = $('#loginUsername').val();
         const password = $('#loginPassword').val();
