@@ -10,11 +10,6 @@
     measurementId: "G-PTFQSD3V75"
     });
 
-    // Initialize Firebase
-    const db = firebase.firestore();
-
-    console.log("JavaScript is running!");
-
 (function ($) {
     "use strict";
 
@@ -42,30 +37,13 @@
         const username = $('#loginUsername').val();
         const password = $('#loginPassword').val();
 
+        const email = "${username}@example.com";
+
         try {
 
-            // Fetch user data from Firestore
-            const userDocRef = db.collection("users").doc(username);
-            const userDoc = await userDocRef.get();
-
-            if (!userDoc.exists()) {
-                alert("Username not found!");
-                return;
-            }
-
-            const userData = userDoc.data();
-            const hashedPassword = userData.password;
-
-            // Compare hashed password
-            const isPasswordValid = await bcrpt.compare(password, hashedPassword);
-
-            if (isPasswordValid) {
-                alert("Login Successful!");
-                window.location.href = "dashboard.html"; // Redirect to dashboard
-            }
-            else {
-                alert("Invalid password!");
-            }
+            await auth.signInWithEmailAndPassword(email, password);
+            alert("Login Successful!");
+            window.location.href = "dashboard.html"; // Redirect to dashboard
         } catch (error) {
             console.error("Error signing in:", error);
             alert("Login failed: " + error.message);

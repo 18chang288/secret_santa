@@ -11,7 +11,6 @@
 });
 
 const auth = firebase.auth();
-const db = firebase.firestore();
 
 // Protect the dashboard page
 auth.onAuthStateChanged((user) => {
