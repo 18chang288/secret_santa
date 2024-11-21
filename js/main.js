@@ -39,7 +39,7 @@ const auth = firebase.auth();
         const username = $('#loginUsername').val();
         const password = $('#loginPassword').val();
 
-        const email = "${username}@example.com";
+        const email = `${username}@example.com`;
 
         try {
 
