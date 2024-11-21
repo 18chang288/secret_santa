@@ -1,6 +1,6 @@
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
+    firebase.initializeApp({
     apiKey: "AIzaSyBGewvoq0GfOyo1BK44Y-RJOtH2Hs4tNNE",
     authDomain: "secret-santa-cb2b2.firebaseapp.com",
     projectId: "secret-santa-cb2b2",
@@ -8,7 +8,7 @@
     messagingSenderId: "612984789760",
     appId: "1:612984789760:web:d88f3fe6da9ec0803fb1e5",
     measurementId: "G-PTFQSD3V75"
-    };
+    });
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -46,8 +46,8 @@
         try {
 
             // Fetch user data from Firestore
-            const userDocRef = doc(db, 'users', username);
-            const userDoc = await getDoc(userDocRef);
+            const userDocRef = db.collection("users").doc(username);
+            const userDoc = await userDocRef.get();
 
             if (!userDoc.exists()) {
                 alert("Username not found!");
