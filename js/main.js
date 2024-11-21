@@ -46,6 +46,7 @@ import bcrpt from "bcryptjs";
 
     $('.validate-form').on('submit', async function(event){
         event.preventDefault();
+        console.log("Form submitted!");
 
         const username = $('#loginUsername').val();
         const password = $('#loginPassword').val();
