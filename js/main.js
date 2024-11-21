@@ -10,6 +10,8 @@
     measurementId: "G-PTFQSD3V75"
     });
 
+const auth = firebase.auth();
+
 (function ($) {
     "use strict";
 
