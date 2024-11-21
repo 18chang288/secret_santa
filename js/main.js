@@ -65,7 +65,7 @@ import bcrpt from "bcryptjs";
             const hashedPassword = userData.password;
 
             // Compare hashed password
-            const isPasswordCorrect = await bcrpt.compare(password, hashedPassword);
+            const isPasswordValid = await bcrpt.compare(password, hashedPassword);
 
             if (isPasswordValid) {
                 alert("Login Successful!");
