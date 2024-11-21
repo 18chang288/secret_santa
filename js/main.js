@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { get } from "http";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import bcrpt from "bcryptjs";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,6 +21,7 @@ import { get } from "http";
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const db = getFirestore(app);
 
 (function ($) {
     "use strict";
@@ -45,40 +47,37 @@ import { get } from "http";
     $('.validate-form').on('submit', async function(event){
         event.preventDefault();
 
-        var check = true;
-
-        for(var i=0; i<input.length; i++) {
-            if(validate(input[i]) == false){
-                showValidate(input[i]);
-                check=false;
-            }
-        }
-
-        if (!check) return false;
-
         const username = $('#loginUsername').val();
         const password = $('#loginPassword').val();
 
         try {
-            // Authenticate user with Firebase
-            const userCredential = await signInWithEmailAndPassword(app, username, password);
 
-            // Get user data from Firestore
+            // Fetch user data from Firestore
             const userDocRef = doc(db, 'users', username);
             const userDoc = await getDoc(userDocRef);
 
-            if (userDoc.exists()) {
-                console.log("User data:", userDoc.data());
+            if (!userDoc.exists()) {
+                alert("Username not found!");
+                return;
             }
 
-            alert("Login successful!");
-            window.location.href = "dashboard.html"; // Redirect to dashboard
+            const userData = userDoc.data();
+            const hashedPassword = userData.password;
+
+            // Compare hashed password
+            const isPasswordCorrect = await bcrpt.compare(password, hashedPassword);
+
+            if (isPasswordValid) {
+                alert("Login Successful!");
+                window.location.href = "dashboard.html"; // Redirect to dashboard
+            }
+            else {
+                alert("Invalid password!");
+            }
         } catch (error) {
             console.error("Error signing in:", error);
             alert("Login failed: " + error.message);
         }
-
-        return false;
     });
 
 
