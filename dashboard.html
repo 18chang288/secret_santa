@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chang Family Secret Santa Dashboard</title>
+  <link rel="stylesheet" href="css/style.css"> <!-- Link to your CSS -->
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <h1>🎄 Chang Family Secret Santa 🎁</h1>
+        <h3 id="welcomeMessage">Welcome, [User's Name]!</h3>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        <div class="dashboard-left">
+        <h2>Instructions</h2>
+        <p>1. Click the button to select your Secret Santa!</p>
+        <p>2. Once selected, your match will be displayed on the right.</p>
+        <p>3. Have fun and keep it a secret! 🤫</p>
+        <button id="viewWishlistBtn">View Wishlist</button>
+        </div>
+
+        <div class="dashboard-right">
+        <div class="selection-area">
+            <button id="selectSantaBtn">🎁 Spin the Wheel 🎁</button>
+            <div id="selectedSanta" class="selected-santa">
+            <!-- Selected Secret Santa's Name will appear here -->
+            <h3>Your Secret Santa Match: </h3>
+            <p id="santaName">[No one selected yet]</p>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="dashboard-footer">
+        <p>Happy Holidays, Chang Family! 🎅</p>
+        <button id="logoutBtn">Logout</button>
+        </footer>
+
+    <!-- Link to JavaScript -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
