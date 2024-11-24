@@ -16,7 +16,9 @@ const auth = firebase.auth();
 auth.onAuthStateChanged((user) => {
 if (user) {
     // User is logged in
-    document.getElementById("welcomeMessage").innerText = `Welcome, ${user}`;
+    const email = user.email;
+    const username = email.substring(0, email.indexOf('@'));
+    document.getElementById("welcomeMessage").innerText = `Welcome, ${username}!`;
 } else {
     // Redirect to login page if not logged in
     window.location.href = "index.html";
