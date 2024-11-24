@@ -2,7 +2,25 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family:'Caveat', cursive, 'Arial', sans-serif;
+  background: linear-gradient(to bottom, #e3f2fd, #fff);
+  overflow: hidden;
 }
+
+.snow {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: url('https://i.ibb.co/K5bP7JF/snow.png') repeat top center;
+  animation: snow 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes snow {
+  0% { background-position: 0px 0px; }
+  100% { background-position: 0px 200px; }
+}
+
 
 .container {
   display: flex;
@@ -12,32 +30,52 @@ body, html {
 
 .dashboard-left {
   width: 25%;
-  background-color: green;
+  background-color: #2e7d32;
   color: white;
   padding: 20px;
   box-sizing: border-box;
+  border-right: 5px solid #ffcc00;
+  text-shadow: 1px 1px 2px black;
 }
 
 .dashboard-right {
   width: 75%;
+  background-color: #fff;
   padding: 20px;
   box-sizing: border-box;
 }
 
 h1 {
-  color: darkred;
+  font-family: 'Pacifico', cursive;
+  color: #b71c1c; /* Dark red */
   text-align: center;
+  margin: 20px 0;
+}
+
+h2 {
+  color: #ffeb3b; /* Yellow-Gold */
+  margin-bottom: 10px;
 }
 
 button {
-  background-color: #ffcc00;
-  color: none;
+  font-family: 'Caveat', cursive;
+  background-color: #ffcc00; /* Gold */
+  color: #000;
+  border: none;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 18px;
+  border-radius: 20px;
   cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
 button:hover {
-  background-color: #ff9900;
+  background-color: #ff9900; /* Bright orange */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
 }
 
+button.festive-button {
+  margin: 15px 0;
+}
