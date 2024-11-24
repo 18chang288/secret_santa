@@ -44,7 +44,6 @@ const auth = firebase.auth();
         try {
 
             await auth.signInWithEmailAndPassword(email, password);
-            alert("Login Successful!");
             window.location.href = "dashboard.html"; // Redirect to dashboard
         } catch (error) {
             console.error("Error signing in:", error);
