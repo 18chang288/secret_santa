@@ -79,3 +79,32 @@ button:hover {
 button.festive-button {
   margin: 15px 0;
 }
+
+/* christmas tree */
+.tree {
+  position: relative;
+  width: 0;
+  height: 0;
+  margin: 50px auto;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid green;
+}
+
+.lights {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  animation: blink 1s infinite alternate;
+}
+
+.lights:nth-child(1) { top: 10px; left: 30px; animation-delay: 0.5s; }
+.lights:nth-child(2) { top: 30px; left: 50px; animation-delay: 1s; }
+.lights:nth-child(3) { top: 50px; left: 40px; animation-delay: 1.5s; }
+
+@keyframes blink {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
