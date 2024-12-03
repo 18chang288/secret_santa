@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chang Family Secret Santa Dashboard</title>
   <link rel="stylesheet" href="css/dashboard.css"> <!-- Link to your CSS -->
+  <link rel="icon" href="data:,">
 </head>
 <body>
 
@@ -16,37 +17,95 @@
 
     <!-- MAIN CONTENT -->
     <div class="container">
+      <style>
+        /* customizable snowflake styling */
+        .snowflake {
+          color: #fff;
+          font-size: 1em;
+          font-family: Arial, sans-serif;
+          text-shadow: 0 0 5px #000;
+        }
+        
+        .snowflake,.snowflake .inner{animation-iteration-count:infinite;animation-play-state:running}@keyframes snowflakes-fall{0%{transform:translateY(0)}100%{transform:translateY(110vh)}}@keyframes snowflakes-shake{0%,100%{transform:translateX(0)}50%{transform:translateX(80px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;user-select:none;cursor:default;animation-name:snowflakes-shake;animation-duration:3s;animation-timing-function:ease-in-out}.snowflake .inner{animation-duration:10s;animation-name:snowflakes-fall;animation-timing-function:linear}.snowflake:nth-of-type(0){left:1%;animation-delay:0s}.snowflake:nth-of-type(0) .inner{animation-delay:0s}.snowflake:first-of-type{left:10%;animation-delay:1s}.snowflake:first-of-type .inner,.snowflake:nth-of-type(8) .inner{animation-delay:1s}.snowflake:nth-of-type(2){left:20%;animation-delay:.5s}.snowflake:nth-of-type(2) .inner,.snowflake:nth-of-type(6) .inner{animation-delay:6s}.snowflake:nth-of-type(3){left:30%;animation-delay:2s}.snowflake:nth-of-type(11) .inner,.snowflake:nth-of-type(3) .inner{animation-delay:4s}.snowflake:nth-of-type(4){left:40%;animation-delay:2s}.snowflake:nth-of-type(10) .inner,.snowflake:nth-of-type(4) .inner{animation-delay:2s}.snowflake:nth-of-type(5){left:50%;animation-delay:3s}.snowflake:nth-of-type(5) .inner{animation-delay:8s}.snowflake:nth-of-type(6){left:60%;animation-delay:2s}.snowflake:nth-of-type(7){left:70%;animation-delay:1s}.snowflake:nth-of-type(7) .inner{animation-delay:2.5s}.snowflake:nth-of-type(8){left:80%;animation-delay:0s}.snowflake:nth-of-type(9){left:90%;animation-delay:1.5s}.snowflake:nth-of-type(9) .inner{animation-delay:3s}.snowflake:nth-of-type(10){left:25%;animation-delay:0s}.snowflake:nth-of-type(11){left:65%;animation-delay:2.5s}
+        </style>
+        <div class="snowflakes" aria-hidden="true">
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+          <div class="snowflake">
+            <div class="inner">❅</div>
+          </div>
+        </div>
+        
+
         <div class="dashboard-left">
             <h2>Instructions</h2>
             <li>Click the button to select your Secret Santa!</li>
             <li>Once selected, your match will be displayed on the right.</li>
             <li>Have fun and keep it a secret! 🤫</li>
-            <button id="viewWishlistBtn" class="festive-button">View Wishlist</button>
 
             <h2>Cov lus qhia.</h2>
             <li>Nyem lub pob xaiv koj tus Secret Santa.</li>
             <li>Thaum xiav, tus neeg koj xaiv thaum raug qhia.</li>
             <li>Muaj kev lom zem thiab khaws cia tsis pub leej twg paub!</li>
-        </div>
 
+            <button id="logout" class="festive-button">Logout</button>
+        </div>
         <div class="dashboard-right">
-            <button id="selectSantaBtn" class="festive-button">🎁 Spin the Wheel 🎁</button>
-            <div id="wheel" class="wheel">
-                <div class="segment">Santa 1</div>
-                <div class="segment">Santa 2</div>
-                <div class="segment">Santa 3</div>
-                <div class="segment">Santa 4</div>
-                <div class="segment">Santa 5</div>
-                <div class="segment">Santa 6</div>
-            <h3>Your Secret Santa Match: </h3>
-            <p id="santaName">[No one selected yet]</p>
+          <div class="event-page">
+            <div class="event-header">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
+              <div class="date-container">
+                <div class="line"></div>
+                <span>December 24th</span>
+                <div class="line"></div>
+              </div>
+              
+              <h1>Secret XMAS!!!</h1>
+
+          
+            <button class="festive-button" id="generate">🎁 Generate Secret Santa 🎁</button>
+            <div id="results" style="display: none;">
+              <h2>Your Secret Santa is...</h2>
+              <h3 id="assignment-list"></h3>
             </div>
+          </div>
+        </div>
         </div>
     </div>
 
     <!-- FOOTER -->
     <footer class="dashboard-footer">
-        <button id="logoutBtn" class="festive-button">Logout</button>
         </footer>
 
     <div class="snow"></div>
@@ -57,8 +116,8 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
     <!-- Link to JavaScript -->
-    <script src="js/dashboard.js"></script>
+     <script src="js/dashboard.js"></script>
 </body>
 </html>

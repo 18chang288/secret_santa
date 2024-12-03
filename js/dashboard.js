@@ -11,60 +11,219 @@
 });
 
 const auth = firebase.auth();
+const db = firebase.firestore();
 
 // Protect the dashboard page
 auth.onAuthStateChanged((user) => {
 if (user) {
     // User is logged in
+    const initializeUser = async () => {
     const email = user.email;
     const username = email.substring(0, email.indexOf('@'));
     document.getElementById("welcomeMessage").innerText = `Welcome, ${username}!`;
+
+    // check if user already has assignment
+    const participantsRef = firebase.firestore().collection("Participants");
+    const snapshot = await participantsRef.where("name", "==", username).get();
+
+    if (!snapshot.empty) {
+        const userDoc = snapshot.docs[0];
+        const userData = userDoc.data();
+
+        if (userData.assigned) {
+            console.log(`Assignment already exists for ${username}: ${userData.assigned}`);
+            document.getElementById('assignment-list').innerHTML = `<h1>${userData.assigned}</h1>`;
+            document.getElementById('generate').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+    }
+    };
+    initializeUser().catch((error) => {
+    console.error("Error initializing user:", error);
+    });
+
 } else {
     // Redirect to login page if not logged in
     window.location.href = "index.html";
 }
 });
 
-// Handle Secret Santa selection
-document.getElementById('selectSantaBtn').addEventListener('click', () => {
-    const wheel = document.getElementById('wheel');
-    const segments = wheel.querySelectorAll('.segment');
-    const randomIndex = Math.floor(Math.random() * segments.length);
-    const selectedSegment = segments[randomIndex];
+//   // Function to format the date
+//   function formatDate(date) {
+//     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+//     return date.toLocaleDateString('en-US', options);
+//   }
 
-    // Rotate the wheel
-    const rotation = 360 * 3 + randomIndex * (360 / segments.length);
-    wheel.style.transform = `rotate(${rotation}deg)`;
+//   // Get today's date
+//   const today = new Date();
 
-    // Display the selected Secret Santa
-    setTimeout(() => {
-        document.getElementById('santaName').textContent = `Secret Santa ${selectedSegment.textContent}`;
-    }, 4000); // Wait for the rotation to complete
-});
+//   // Format the date and insert it into the span
+//   document.getElementById('current-date').textContent = formatDate(today);
 
-// Logout function
-document.getElementById("logoutBtn").addEventListener("click", () => {
-auth.signOut().then(() => {
-    window.location.href = "index.html"; // Redirect to login page after logout
-}).catch((error) => {
-    console.error(error.message);
-});
-});
+  //--------------------------------------------------------------------------------
+  document.addEventListener('DOMContentLoaded', () => {
 
-// snowfall
-function createSnowflakes() {
-    const snowContainer = document.querySelector('.snow');
-    const snowflakeCount = 100; // Adjust the number of snowflakes
+    document.getElementById('logout').addEventListener('click', async () => {
+        try {
+            await firebase.auth().signOut();
+            window.location.href = "index.html"; // Redirect to the login page or home page
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
+    });
+    
+    async function fetchParticipants() {
+        try {
+        const participantsRef = firebase.firestore().collection("Participants");
+        const snapshot = await participantsRef.get();
 
-    for (let i = 0; i < snowflakeCount; i++) {
-        const snowflake = document.createElement('div');
-        snowflake.className = 'snowflake';
-        snowflake.style.left = `${Math.random() * 100}vw`;
-        snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`; // Random duration between 5s and 10s
-        snowflake.style.opacity = Math.random();
-        snowflake.style.fontSize = `${Math.random() * 10 + 10}px`; // Random size between 10px and 20px
-        snowContainer.appendChild(snowflake);
+        console.log("snapshot size: ", snapshot.size);
+
+        if (snapshot.empty) {
+            console.error("No matching documents.");
+            return { kids: [], adults: [] };
+        }
+    
+        const participants = [];
+        snapshot.forEach((doc) => {
+            console.log("Document data: ", doc.data());
+            participants.push(doc.data());
+        });
+    
+        const kids = [];
+        const adults = [];
+    
+        participants.forEach((participant) => {
+            if (participant.role === "kid") {
+                kids.push(participant.name);
+            } else if (participant.role === "adult") {
+                adults.push(participant.name);
+            }
+        });
+    
+        return { kids, adults };
+    } catch (error) {
+        console.error("Error fetching participants:", error);
     }
 }
 
-document.addEventListener('DOMContentLoaded', createSnowflakes);
+    async function saveAssignmentsToFirebase(assignments) {
+        const participantsRef = firebase.firestore().collection("Participants");
+    
+        for (const [giver, recipients] of Object.entries(assignments)) {
+            const query = participantsRef.where("name", "==", giver);
+            const snapshot = await query.get();
+    
+            if (!snapshot.empty) {
+                snapshot.forEach(async (doc) => {
+                    await participantsRef.doc(doc.id).update({
+                        assigned: recipients.join(", "),
+                    });
+                });
+            }
+        }
+    }
+    
+    document.getElementById('generate').addEventListener('click', async () => {
+        try {
+            // Authenticate and ensure the user is logged in
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    const email = user.email;
+                    const username = email.substring(0, email.indexOf('@')).trim();
+    
+                    const participantsRef = firebase.firestore().collection("Participants");
+    
+                    // Check if the user already has an assignment
+                    const userSnapshot = await participantsRef.where("name", "==", username).get();
+    
+                    if (userSnapshot.empty) {
+                        console.error("User not found in the participants list:", username);
+                        return;
+                    }
+    
+                    const userDoc = userSnapshot.docs[0];
+                    const userData = userDoc.data();
+    
+                    // Check if user already has assignments
+                    if (userData.assigned) {
+                        // Display the assignments for the user
+                        document.getElementById('assignment-list').innerHTML = `<h1>${userData.assigned}</h1>`;
+                        document.getElementById("welcomeMessage").innerText = `Welcome, ${username}!`;
+    
+                        // Hide the generate button and show the results
+                        document.getElementById('generate').style.display = 'none';
+                        document.getElementById('results').style.display = 'block';
+                        return;
+                    }
+    
+                    // Initialize assignments
+                    let assignments = [];
+    
+                    // Fetch unassigned kids
+                    const kidsSnapshot = await participantsRef
+                        .where("picked", "==", false)
+                        .where("role", "==", "kid")
+                        .get();
+                    let kids = kidsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+                    // Fetch unassigned adults excluding self
+                    const adultsSnapshot = await participantsRef
+                        .where("picked", "==", false)
+                        .where("role", "==", "adult")
+                        .where("name", "!=", username)
+                        .get();
+                    let adults = adultsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+                    // Determine the number of recipients for this gifter
+                    let numRecipientsToAssign = kids.length > 0 ? 2 : 1;
+    
+                    // Assign recipients
+                    if (kids.length > 0) {
+                        // Assign a kid
+                        const randomKidIndex = Math.floor(Math.random() * kids.length);
+                        const kidRecipient = kids[randomKidIndex];
+                        assignments.push(kidRecipient.name);
+    
+                        // Remove kid from the list and mark as picked
+                        kids.splice(randomKidIndex, 1);
+                        await participantsRef.doc(kidRecipient.id).update({ picked: true });
+                    }
+    
+                    // Assign an adult
+                    if (adults.length > 0) {
+                        const randomAdultIndex = Math.floor(Math.random() * adults.length);
+                        const adultRecipient = adults[randomAdultIndex];
+                        assignments.push(adultRecipient.name);
+    
+                        // Remove adult from the list and mark as picked
+                        adults.splice(randomAdultIndex, 1);
+                        await participantsRef.doc(adultRecipient.id).update({ picked: true });
+                    } else {
+                        console.error("No adults left to assign.");
+                        document.getElementById('assignment-list').innerHTML = `<p>No adults left to assign.</p>`;
+                        return;
+                    }
+    
+                    // Update the user's assignments in the database
+                    await participantsRef.doc(userDoc.id).update({ assigned: assignments.join(", ") });
+    
+                    // Display the assignments for the user
+                    document.getElementById('assignment-list').innerHTML = `<h1>${assignments.join(", ")}</h1>`;
+                    document.getElementById("welcomeMessage").innerText = `Welcome, ${username}!`;
+    
+                    // Hide the generate button and show the results
+                    document.getElementById('generate').style.display = 'none';
+                    document.getElementById('results').style.display = 'block';
+    
+                } else {
+                    // Redirect to the login page if not logged in
+                    window.location.href = "index.html";
+                }
+            });
+        } catch (error) {
+            console.error("Error during assignment generation:", error);
+        }
+    });    
+    
+});
